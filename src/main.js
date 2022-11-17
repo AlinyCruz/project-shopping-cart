@@ -7,24 +7,40 @@ document.querySelector('.cep-button').addEventListener('click', searchCep);
 
 const produtos = document.querySelector('.products'); // section dos produtos
 
-const addCarregando = () => {
+const addCarregando = (param = 'carregando') => {
   const criaElemento = document.createElement('h1');
-  criaElemento.innerHTML = 'Carregando...';
-  criaElemento.classList.add('loading');
+  if (param === 'error') {
+    criaElemento.innerHTML = 'Algum erro ocorreu, recarregue a página e tente novamente';
+    criaElemento.classList.add('error');
+  } else {
+    criaElemento.innerHTML = 'Carregando...';
+    criaElemento.classList.add('loading');
+  }
   produtos.appendChild(criaElemento);
 };
-addCarregando();
-
-const listaDeProdutos = await fetchProductsList('computador'); // traz o array do objeto do computador
+// addCarregando();
 
 const retiraCarregando = () => {
   const carregando = document.querySelector('.loading');
   carregando.remove();
 };
-retiraCarregando();
+// retiraCarregando();
 
-listaDeProdutos.forEach((item) => {
-  produtos.appendChild(createProductElement(item));
-});
+const criarElementos = async () => {
+  addCarregando();
+  try {
+    const listaDeProdutos = await fetchProductsList('computador'); // traz o array do objeto do computador
+    retiraCarregando();
 
-// createProductElement(produtos); --> cria os produtos na grade
+    listaDeProdutos.forEach((item) => {
+      produtos.appendChild(createProductElement(item));
+    });
+  } catch (error) {
+    retiraCarregando();
+    addCarregando('error');
+  }
+};
+
+window.onload = () => {
+  criarElementos();
+};
