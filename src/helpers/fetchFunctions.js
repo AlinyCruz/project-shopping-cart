@@ -11,4 +11,4 @@ export const fetchProductsList = async (busca) => {
   const data = await response.json();
   return data.results;
 };
-fetchProductsList('computador');
+// fetchProductsList('computador');

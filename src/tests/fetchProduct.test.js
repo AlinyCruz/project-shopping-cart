@@ -15,11 +15,11 @@ describe('Teste a função fetchProduct', () => {
     expect(fetch).toHaveBeenCalled();
   });
 
-  //TESTE 03
-  it('', () => {
-    // await fetchProduct('MLB1405519561');
-    expect().toHaveBeenCalled()
-  });
+  // TESTE 03
+  // it('', () => {
+  //   // await fetchProduct('MLB1405519561');
+  //   expect().toHaveBeenCalled()
+  // });
 
   //TESTE 04
 
