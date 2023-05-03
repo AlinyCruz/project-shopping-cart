@@ -1,28 +1,29 @@
 const inputDigCep = document.querySelector('.cep-input');
 const divEnd = document.querySelector('.cart__address');
 
-export const getAddress = async (busca) => {
+export const searchCep = async (busca) => {
   const url1 = `https://cep.awesomeapi.com.br/json/${busca}`;
   const url2 = `https://brasilapi.com.br/api/cep/v2/${busca}`;
 
-  try{
+  try {
     const apis = await Promise.any([fetch(url1), fetch(url2)]);
     const data = await apis.json();
     const resultado = data;
-    return resultado;
+    console.log(resultado);
   } catch (error) {
     divEnd.innerHTML = 'CEP não encontrado';
   }
 };
 
-export const searchCep = async () => {
+export const getAddress = async () => {
   const digitaCep = inputDigCep.value;
-  const cepApi = await getAddress(digitaCep);
-  const { address, district, city, state, neighborhood, street } = cepApi;
-  const enderecoCompleto = `${address || street} - ${district
-    || neighborhood} - ${city} - ${state}`;
+  const cepApi = await searchCep(digitaCep);
+  // const { address, district, city, state, neighborhood, street } = cepApi;
+  const enderecoCompleto = `${cepApi.address || cepApi.street} - ${cepApi.district
+    || cepApi.neighborhood} - ${cepApi.city} - ${cepApi.state}`;
   divEnd.innerHTML = enderecoCompleto;
-  if (enderecoCompleto.includes('undefined')) {
+
+  if (cepApi.status) {
     divEnd.innerHTML = 'CEP não encontrado';
   }
 };
